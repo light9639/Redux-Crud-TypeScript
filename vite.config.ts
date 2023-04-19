@@ -9,7 +9,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        assetFileNames: (assetInfo) => {
+        assetFileNames: (assetInfo: any) => {
           let extType = assetInfo.name.split('.').at(1);
           if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
             extType = 'img';
