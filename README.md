@@ -20,7 +20,8 @@ yarn create vite
 ```
 - 터미널에서 실행 후 프로젝트 이름 만든 후 React 선택, Typescirpt 선택하면 생성 완료.
 ## 🚤 Redux-Toolkit, Redux-logger, Redux-persist 설치
-- Redux-Toolkit, Redux-logger, Redux-persist 설치하기
+- `Redux-Toolkit`, `Redux-logger`, `Redux-persist`를 다음명령어로 설치한다. 
+- `Redux-logger`는 리덕스 값이 변경될 때 콘솔에 값이 출력되도록 하는 라이브러리이며, `Redux-persist`는 값이 로컬스토리지에 저장되도록 하는 라이브러리이다.
 ```bash
 npm install redux react-redux @reduxjs/toolkit redux-logger redux-persist
 # or
@@ -29,6 +30,8 @@ yarn add redux react-redux @reduxjs/toolkit redux-logger redux-persist
 
 ## ✒️ main.tsx, App.tsx, index.html, App.css 수정 및 작성
 ### :zap: main.tsx
+- `PersistGate`를 이용하여 로컬스토리지에 값이 저장되도록 한다.
+- `Provider`를 `redux`에서 가져오고 `store.ts` 파일을 가져와 사용할 수 있도록 설정한다.
 ```typescript
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -53,6 +56,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 )
 ```
 ### :zap: App.tsx
+- `useSelector`, `useDispatch` 함수를 `store.ts`에서 `import` 하여 사용한다.
+- `input`에 `onChange`를 사용하여 각각의 `useState` 값에 데이터를 입력되도록 한다.
+- `input`에 이름과 유저명을 입력하면 그 이름이 추가되는데 이 때 세팅해 놓은 `redux-logger`로 인해 콘솔에 `redux` 값이 출력되며, `redux-persist`로 인해 로컬스토리지에 값이 저장되도록 한다.
+- 각각의 `input`에 `redux-Toolkit` 함수를 `import` 하여 각각의 함수가 실행되도록 작성한다.
 ```typescript
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
@@ -149,7 +156,7 @@ export default function App(): JSX.Element {
 }
 ```
 ### :zap: index.html
-- `html` 상단의 `title`명과 로고 이미지 변경
+- `html` 상단의 `title`명과 로고 이미지를 한다.
 ```html
 <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/light9639/Redux-Persist-TypeScript/main/public/logo512.png" />
 <title>Redux-Crud-TypeScript</title>
@@ -173,6 +180,7 @@ export default function App(): JSX.Element {
 ```
 ## ✒️ FakeData.ts, User.ts, store.ts 수정 및 작성
 ### :zap: FakeData.ts
+- 가짜 데이터를 만들어 다음과 같이 설정한다. 필자는 `Python`의 `Faker`를 이용하여 작성하였다.
 ```typescript
 export const UsersData = [
     {
@@ -219,6 +227,7 @@ export const UsersData = [
 
 ```
 ### :zap: User.ts
+- 각각의 리덕스 함수들을 만들고 타입을 지정한다.
 ```typescript
 import { createSlice } from "@reduxjs/toolkit";
 import { UsersData } from "@data/FakeData";
@@ -247,6 +256,8 @@ export const { addUser, deleteUser, updateUsername } = userSlice.actions;
 export default userSlice.reducer;
 ```
 ### :zap: store.tsx
+- `useDispatch`, `useSelector`의 타입을 아래와 같이 지정해준다.
+- `middleware`에 `redux-logger`를 사용하고, `redux-persist`를 아래와 같이 세팅하면 사용할 수 있다.
 ```typescript
 import {configureStore} from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
